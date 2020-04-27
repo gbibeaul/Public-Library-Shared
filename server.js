@@ -7,7 +7,8 @@ let upload = multer({ dest: __dirname + "/uploads/" });
 let cookieParser = require("cookie-parser");
 let sha1 = require("sha1");
 let dbo = undefined;
-let url = "";
+let url =
+  "mongodb+srv://ashkan:ashkanrpd@cluster0-6wosc.azure.mongodb.net/test?retryWrites=true&w=majority";
 MongoClient.connect(url, { userNewUrlParser: true }, async (err, client) => {
   dbo = await client.db("Library");
 });
