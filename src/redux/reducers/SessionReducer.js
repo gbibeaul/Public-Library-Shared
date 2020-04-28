@@ -13,7 +13,7 @@ export default function SessionReducer(state = initialState, action) {
       state.loggedIn = true;
       state.name = action.name;
       state.userId = action.userId;
-      return;
+      return state;
     case "LOGOUT":
       state.username = "";
       state.loggedIn = false;
@@ -22,10 +22,10 @@ export default function SessionReducer(state = initialState, action) {
       state.selectedCategory = undefined;
       state.categoriesOpen = true;
       state.searchQ = {};
-      return;
+      return state;
     case "REDIRECT-PATH":
       state.redirectPath = action.path;
-      return;
+      return state;
     default:
       return state;
   }
