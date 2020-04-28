@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ItemsList() {
-  const categoriesOpen = useSelector((state) => state.base.categoriesOpen);
+  const categoriesOpen = useSelector((state) => state.option.categoriesOpen);
   const classes = useStyles();
 
   return (

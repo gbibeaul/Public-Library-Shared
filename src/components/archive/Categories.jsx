@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Categories() {
   const { t } = useTranslation();
   const categories = useSelector((state) => state.base.categories);
-  const categoriesOpen = useSelector((state) => state.base.categoriesOpen);
+  const categoriesOpen = useSelector((state) => state.option.categoriesOpen);
   const dispatch = useDispatch();
   const classes = useStyles();
   const getCategories = async () => {

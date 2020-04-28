@@ -74,7 +74,7 @@ export default function Login() {
           <h3>{t("Login.box1-title")}</h3>
           <div className="Details1">
             <FacebookLogin
-              appId="2746486032249962"
+              appId=""
               autoLoad
               fields="name,email,picture"
               callback={responseFacebook}

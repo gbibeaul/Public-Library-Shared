@@ -5,7 +5,7 @@ const initialState = {
   userId: undefined,
   redirectPath: "",
 };
-
+// These are the actions related to Login status
 export default function SessionReducer(state = initialState, action) {
   switch (action.type) {
     case "LOGIN":

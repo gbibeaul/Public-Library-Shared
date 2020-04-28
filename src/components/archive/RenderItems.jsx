@@ -5,10 +5,12 @@ import FilteredItems from "./FilteredItems.jsx";
 
 export default function RenderItems() {
   const { t } = useTranslation();
-  const searchQ = useSelector((state) => state.base.searchQ);
+  const searchQ = useSelector((state) => state.option.searchQ);
   const items = useSelector((state) => state.base.items);
-  const selectedCategory = useSelector((state) => state.base.selectedCategory);
-  const categoriesOpen = useSelector((state) => state.base.categoriesOpen);
+  const selectedCategory = useSelector(
+    (state) => state.option.selectedCategory
+  );
+  const categoriesOpen = useSelector((state) => state.option.categoriesOpen);
   const dispatch = useDispatch();
   const randomItems = useRef([]);
 
