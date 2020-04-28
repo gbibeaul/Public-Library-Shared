@@ -1,3 +1,4 @@
+require("dotenv").config();
 let express = require("express");
 let app = express();
 let MongoClient = require("mongodb").MongoClient;
@@ -7,7 +8,7 @@ let upload = multer({ dest: __dirname + "/uploads/" });
 let cookieParser = require("cookie-parser");
 let sha1 = require("sha1");
 let dbo = undefined;
-let url = "";
+let url = process.env.SERVER_PATH;
 MongoClient.connect(url, { userNewUrlParser: true }, async (err, client) => {
   dbo = await client.db("Library");
 });
