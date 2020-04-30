@@ -13,9 +13,9 @@ import SignUp from "./components/authentications/SignUp.jsx";
 import ItemsList from "./components/archive/ItemsList.jsx";
 import ItemDetails from "./components/archive/ItemDetails.jsx";
 import Profile from "./components/shared/Profile.jsx";
-import ContactUs from "./components/contact-us/ContactUs";
-import Events from "./components/events/Events";
-import Services from "./components/services/Services";
+import ContactUs from "./components/contact-us/ContactUs.jsx";
+import Events from "./components/events/Events.jsx";
+import Services from "./components/services/Services.jsx";
 
 function App() {
   const dispatch = useDispatch();

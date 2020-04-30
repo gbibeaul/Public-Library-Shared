@@ -4,7 +4,13 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: ["eslint:recommended", "plugin:react/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react-redux/recommended",
+    "plugin:node/recommended",
+  ],
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
@@ -16,11 +22,19 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["react"],
+  plugins: ["react", "react-redux"],
   settings: {
     react: {
       version: "detect",
     },
   },
-  rules: {},
+  rules: {
+    "node/no-extraneous-require": [
+      "error",
+      {
+        allowModules: ["express"],
+      },
+    ],
+    "node/no-unsupported-features/es-syntax": "off",
+  },
 };

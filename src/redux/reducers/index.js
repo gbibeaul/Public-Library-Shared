@@ -1,5 +1,5 @@
-import GeneralReducer from "./GeneralReducer";
-import SessionReducer from "./SessionReducer";
-import OptionsReducer from "./OptionsReducer";
+import GeneralReducer from "./GeneralReducer.js";
+import SessionReducer from "./SessionReducer.js";
+import OptionsReducer from "./OptionsReducer.js";
 
 export { GeneralReducer, SessionReducer, OptionsReducer };
