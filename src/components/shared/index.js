@@ -5,10 +5,12 @@ import PoweredBy from "./PoweredBy.jsx";
 import Profile from "./Profile.jsx";
 import Search from "./Search.jsx";
 import CustomizedSnackbars from "./Snackbar.jsx";
-export default Footer;
-export default Logo;
-export default Navbar;
-export default PoweredBy;
-export default Profile;
-export default Search;
-export default CustomizedSnackbars;
+export {
+  Footer,
+  Logo,
+  Navbar,
+  PoweredBy,
+  Profile,
+  Search,
+  CustomizedSnackbars,
+};

@@ -3,6 +3,12 @@ const initialState = {
   categories: [],
   actionItem: undefined,
 };
+
+let index;
+function matchItem(items, actionItem) {
+  index = items.findIndex((item) => item._id === actionItem._id);
+}
+
 // These are the actions that are more related to app not the user
 export default function GeneralReducer(state = initialState, action) {
   switch (action.type) {
@@ -16,9 +22,7 @@ export default function GeneralReducer(state = initialState, action) {
       state.actionItem = action.item;
       return state;
     case "ITEM-UPDATED":
-      const index = state.items.findIndex(
-        (item) => item._id === action.item._id
-      );
+      matchItem(state.items, action.item);
       if (index === -1) return state;
       state.items[index] = action.item;
       state.actionItem = action.item;
