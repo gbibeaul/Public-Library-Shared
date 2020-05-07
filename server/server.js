@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 let express = require("express");
 let app = express();
 let MongoClient = require("mongodb").MongoClient;
@@ -7,19 +7,26 @@ let multer = require("multer");
 let upload = multer({ dest: __dirname + "/uploads/" });
 let cookieParser = require("cookie-parser");
 let sha1 = require("sha1");
+
 let dbo = undefined;
 let url = process.env.SERVER_PATH;
-MongoClient.connect(url, { userNewUrlParser: true }, async (err, client) => {
-  dbo = await client.db("Library");
-});
+MongoClient.connect(
+  url,
+  { userNewUrlParser: true },
+  { useUnifiedTopology: true },
+  async (err, client) => {
+    dbo = await client.db("Library");
+  }
+);
 let sessions = {};
 
 app.use(cookieParser());
 app.use("/", express.static("build")); // Needed for the HTML and JS files
-app.use("/", express.static("public")); // Needed for local assets
+app.use("/", express.static("./public")); // Needed for local assets
 app.use("/uploads", express.static("uploads"));
 
 // Your endpoints go after this line
+//Signup
 // Signup
 app.post("/signup", upload.none(), async (req, res) => {
   let body = JSON.parse(req.body.user);
@@ -50,7 +57,6 @@ app.post("/signup", upload.none(), async (req, res) => {
       })
       .then((result) => (sessionId = "" + result.insertedId));
 
-    console.log("/SignUp - Signed Up Successfully!");
     sessions[sessionId] = email;
     res.cookie("sid", sessionId);
     res.send(
@@ -67,6 +73,7 @@ app.post("/signup", upload.none(), async (req, res) => {
     res.send(JSON.stringify({ success: false, msg: err }));
   }
 });
+
 // Login
 app.post("/login", upload.none(), async (req, res) => {
   let body = JSON.parse(req.body.user);
@@ -112,24 +119,29 @@ app.post("/login", upload.none(), async (req, res) => {
   }
 });
 //Active Session
-
 app.get("/sessions", async (req, res) => {
   const sessionId = req.cookies.sid;
   const email = sessions[sessionId];
   console.log("sessions", sessions);
-  const user = await dbo.collection("users").findOne({ email: email });
-  email
-    ? res.send(
-        JSON.stringify({
-          success: true,
-          email: email,
-          name: user.name,
-          id: user._id,
-          msg: "User is active",
-        })
-      )
-    : res.send(JSON.stringify({ success: false, msg: "User is not active" }));
+  try {
+    const user = await dbo.collection("users").findOne({ email: email });
+    email
+      ? res.send(
+          JSON.stringify({
+            success: true,
+            email: email,
+            name: user.name,
+            id: user._id,
+            msg: "User is active",
+          })
+        )
+      : res.send(JSON.stringify({ success: false, msg: "User is not active" }));
+  } catch (err) {
+    console.log("/Session Error", err);
+    res.send(JSON.stringify({ success: false, msg: err }));
+  }
 });
+
 //Logout
 app.get("/logout", (req, res) => {
   const sessionId = req.cookies.sid;

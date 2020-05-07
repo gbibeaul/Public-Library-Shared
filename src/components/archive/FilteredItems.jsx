@@ -6,13 +6,13 @@ export default function FilteredItems(props) {
   const { t } = useTranslation();
 
   return (
-    <div className="resposive" key={props.key}>
+    <div className="resposive">
       <div className="gallery">
         <div> {props.item.title}</div>
         <img src={props.item.thumbnailUrl} alt="" />
         <div className="des">
           {props.item.authors.map((author, index) => (
-            <span>
+            <span key={index}>
               {author}
               {props.item.authors.length > 0 &&
                 index + 1 !== props.item.authors.length &&

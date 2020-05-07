@@ -97,9 +97,9 @@ export default function Categories() {
     >
       <h3 className="red ml10">{t("Categories")}</h3>
       <List>
-        {categories.map((category) => {
+        {categories.map((category, index) => {
           return (
-            <ListItem>
+            <ListItem key={index}>
               <ListItemText
                 primary={category}
                 onClick={(e) => {
