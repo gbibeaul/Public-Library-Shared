@@ -1,23 +1,14 @@
 require("dotenv").config({ path: "../.env" });
 let express = require("express");
 let app = express();
-let MongoClient = require("mongodb").MongoClient;
 let ObjectId = require("mongodb").ObjectId;
 let multer = require("multer");
 let upload = multer({ dest: __dirname + "/uploads/" });
 let cookieParser = require("cookie-parser");
 let sha1 = require("sha1");
-
 let dbo = undefined;
+let initMongo = require("./database/database.js").initMongo;
 let url = process.env.SERVER_PATH;
-MongoClient.connect(
-  url,
-  { userNewUrlParser: true },
-  { useUnifiedTopology: true },
-  async (err, client) => {
-    dbo = await client.db("Library");
-  }
-);
 let sessions = {};
 
 app.use(cookieParser());
@@ -26,7 +17,7 @@ app.use("/", express.static("./public")); // Needed for local assets
 app.use("/uploads", express.static("uploads"));
 
 // Your endpoints go after this line
-//Signup
+
 // Signup
 app.post("/signup", upload.none(), async (req, res) => {
   let body = JSON.parse(req.body.user);
@@ -579,6 +570,9 @@ app.post("/contact", upload.none(), async (req, res) => {
 
 // // Your endpoints go before this line
 
-app.listen(4000, "0.0.0.0", () => {
-  console.log("Server running on port 4000");
+initMongo(url).then((response) => {
+  dbo = response;
+  app.listen(4000, "0.0.0.0", () => {
+    console.log("Server running on port 4000");
+  });
 });
