@@ -2,10 +2,14 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const upload = multer({ dest: __dirname + "/uploads/" });
-const dbo = require("../database/database.js").dbo;
+const sha1 = require("sha1");
+const getDb = require("../database/database.js").getDb;
+
 // const initMongo = require("../database/database.js").initMongo;
 
 router.post("/", upload.none(), async (req, res) => {
+  let dbo = getDb();
+  let sessions = require("../server.js").sessions;
   let body = JSON.parse(req.body.user);
   let email = body.email;
   let name = body.name;
@@ -35,6 +39,7 @@ router.post("/", upload.none(), async (req, res) => {
       .then((result) => (sessionId = "" + result.insertedId));
 
     sessions[sessionId] = email;
+    console.log("signup", sessions);
     res.cookie("sid", sessionId);
     res.send(
       JSON.stringify({

@@ -10,7 +10,7 @@ let dbo = undefined;
 let initMongo = require("./database/database.js").initMongo;
 let url = process.env.SERVER_PATH;
 let sessions = {};
-
+console.log(sessions);
 app.use(cookieParser());
 app.use("/", express.static("build")); // Needed for the HTML and JS files
 app.use("/", express.static("./public")); // Needed for local assets
@@ -533,3 +533,5 @@ initMongo(url).then((response) => {
     console.log("Server running on port 4000");
   });
 });
+
+module.exports = { sessions };

@@ -3,7 +3,6 @@ let dbo = null;
 
 const initMongo = async (url) => {
   if (!dbo) {
-    console.log("dbo is not null");
     const mongo = await MongoClient.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -13,4 +12,11 @@ const initMongo = async (url) => {
   }
   return dbo;
 };
-module.exports = { dbo, initMongo };
+const getDb = () => {
+  if (!dbo) {
+    console.log("DBO not instantated, call init please!");
+    return;
+  }
+  return dbo;
+};
+module.exports = { getDb, initMongo };
