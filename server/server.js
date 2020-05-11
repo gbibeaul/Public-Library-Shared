@@ -10,6 +10,9 @@ let dbo = undefined;
 let initMongo = require("./database/database.js").initMongo;
 let url = process.env.SERVER_PATH;
 let sessions = {};
+let getSessions = () => {
+  return sessions;
+};
 console.log(sessions);
 app.use(cookieParser());
 app.use("/", express.static("build")); // Needed for the HTML and JS files
@@ -23,49 +26,9 @@ const signup = require("./endpoints/signup.js");
 app.use("/signup", signup);
 
 // Login
-app.post("/login", upload.none(), async (req, res) => {
-  let body = JSON.parse(req.body.user);
-  let email = body.email;
-  let password = body.password;
-  try {
-    let user = await dbo.collection("users").findOne({ email: email });
-    if (!user) {
-      console.log("/Login-Error, Username not found!");
-      res.send(
-        JSON.stringify({
-          success: false,
-          msg: "Login-Error, Username not found!",
-        })
-      );
-      return;
-    }
-    if (!(user.password === sha1(password))) {
-      res.send(
-        JSON.stringify({
-          success: false,
-          msg: "Login-Error, Incorrect Password!",
-        })
-      );
-      return;
-    }
-    console.log("/Login-Success, Login Successful!");
-    let sessionId = "" + user._id;
-    sessions[sessionId] = user.email;
-    res.cookie("sid", sessionId);
-    res.send(
-      JSON.stringify({
-        success: true,
-        msg: "Login Successful!",
-        name: user.name,
-        email: user.email,
-        id: user._id,
-      })
-    );
-  } catch (err) {
-    console.log("/Login Error", err);
-    res.send(JSON.stringify({ success: false, msg: err }));
-  }
-});
+const login = require("./endpoints/login.js");
+app.use("/login", login);
+
 //Active Session
 app.get("/sessions", async (req, res) => {
   const sessionId = req.cookies.sid;
@@ -534,4 +497,4 @@ initMongo(url).then((response) => {
   });
 });
 
-module.exports = { sessions };
+module.exports = getSessions;

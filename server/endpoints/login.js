@@ -6,53 +6,49 @@ const sha1 = require("sha1");
 const getDb = require("../database/database.js").getDb;
 const getSessions = require("../server.js");
 
-// const initMongo = require("../database/database.js").initMongo;
-
 router.post("/", upload.none(), async (req, res) => {
   let dbo = getDb();
   let sessions = getSessions();
+  console.log("sessions at login", sessions);
   let body = JSON.parse(req.body.user);
   let email = body.email;
-  let name = body.name;
   let password = body.password;
-  let image = body.image;
   try {
     let user = await dbo.collection("users").findOne({ email: email });
-    if (user) {
-      console.log("/SignUp Error - Username is already taken!");
+    if (!user) {
+      console.log("/Login-Error, Username not found!");
       res.send(
-        JSON.stringify({ success: false, msg: "Username is already taken!" })
+        JSON.stringify({
+          success: false,
+          msg: "Login-Error, Username not found!",
+        })
       );
       return;
     }
-    let sessionId;
-    await dbo
-      .collection("users")
-      .insertOne({
-        email: email,
-        name: name,
-        password: sha1(password),
-        img: image,
-        itemsHistory: [],
-        itemsToReturn: [],
-        reservedItems: [],
-      })
-      .then((result) => (sessionId = "" + result.insertedId));
-
-    sessions[sessionId] = email;
-    console.log("signup", sessions);
+    if (!(user.password === sha1(password))) {
+      res.send(
+        JSON.stringify({
+          success: false,
+          msg: "Login-Error, Incorrect Password!",
+        })
+      );
+      return;
+    }
+    console.log("/Login-Success, Login Successful!");
+    let sessionId = "" + user._id;
+    sessions[sessionId] = user.email;
     res.cookie("sid", sessionId);
     res.send(
       JSON.stringify({
         success: true,
         msg: "Login Successful!",
-        name: name,
-        email: email,
-        id: sessionId,
+        name: user.name,
+        email: user.email,
+        id: user._id,
       })
     );
   } catch (err) {
-    console.log("/SignUp Error", err);
+    console.log("/Login Error", err);
     res.send(JSON.stringify({ success: false, msg: err }));
   }
 });
