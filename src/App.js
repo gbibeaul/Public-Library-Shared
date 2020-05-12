@@ -46,11 +46,15 @@ function App() {
     }
     console.log(body.success, body.msg);
   };
+
   useEffect(() => {
     getItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     activeSessionCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
