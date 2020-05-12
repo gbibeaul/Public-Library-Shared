@@ -4,12 +4,9 @@ const multer = require("multer");
 const upload = multer({ dest: __dirname + "/uploads/" });
 const sha1 = require("sha1");
 const getDb = require("../database/database.js").getDb;
-const getSessions = require("../server.js");
 
 router.post("/", upload.none(), async (req, res) => {
   let dbo = getDb();
-  let sessions = getSessions();
-  console.log("sessions at login", sessions);
   let body = JSON.parse(req.body.user);
   let email = body.email;
   let password = body.password;
@@ -36,7 +33,11 @@ router.post("/", upload.none(), async (req, res) => {
     }
     console.log("/Login-Success, Login Successful!");
     let sessionId = "" + user._id;
-    sessions[sessionId] = user.email;
+
+    await dbo
+      .collection("sessions")
+      .insertOne({ sid: sessionId, email: user.email, name: user.name });
+
     res.cookie("sid", sessionId);
     res.send(
       JSON.stringify({

@@ -10,7 +10,7 @@ export default function Events() {
       <div className="pageTitle">{t("Events.pageTitle")}</div>
       <div className="events-contents">
         <img src={t("Events.img")} alt=""></img>
-        <div classname="events-text">{t("Events.text")}</div>
+        <div className="events-text">{t("Events.text")}</div>
       </div>
     </div>
   );
