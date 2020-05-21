@@ -6,9 +6,8 @@ const upload = multer({ dest: __dirname + "/uploads/" });
 const getDb = require("../database/database.js").getDb;
 
 router.post("/", upload.none(), async (req, res) => {
-  const dbo = getDb();
   const sessionId = req.cookies.sid;
-  const user = await dbo.collection("sessions").findOne({ sid: sessionId });
+  const user = await getDb("sessions").findOne({ sid: sessionId });
   const itemId = req.body.id;
   if (!user) {
     return res.send(
@@ -17,7 +16,7 @@ router.post("/", upload.none(), async (req, res) => {
   }
   const email = user.email;
   try {
-    const alreadyReserved = await dbo.collection("books").findOne({
+    const alreadyReserved = await getDb("books").findOne({
       _id: ObjectId(itemId),
       reservations: sessionId,
     });
@@ -34,7 +33,7 @@ router.post("/", upload.none(), async (req, res) => {
     res.send(JSON.stringify({ success: false, msg: err }));
   }
   try {
-    const book = await dbo.collection("books").findOneAndUpdate(
+    const book = await getDb("books").findOneAndUpdate(
       {
         _id: ObjectId(itemId),
         reservations: sessionId,
@@ -43,12 +42,10 @@ router.post("/", upload.none(), async (req, res) => {
       { returnOriginal: false }
     );
     console.log("book", book.value);
-    await dbo
-      .collection("users")
-      .updateOne(
-        { _id: ObjectId(sessionId), reservedItems: itemId },
-        { $pull: { reservedItems: itemId } }
-      );
+    await getDb("users").updateOne(
+      { _id: ObjectId(sessionId), reservedItems: itemId },
+      { $pull: { reservedItems: itemId } }
+    );
     res.send(
       JSON.stringify({
         success: true,

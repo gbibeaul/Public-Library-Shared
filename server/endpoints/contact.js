@@ -5,14 +5,13 @@ const upload = multer({ dest: __dirname + "/uploads/" });
 const getDb = require("../database/database.js").getDb;
 
 router.post("/", upload.none(), async (req, res) => {
-  let dbo = getDb();
   let body = JSON.parse(req.body.contact);
   if (!body.email || !body.message) {
     res.send({ success: false, msg: "Mandatory fields are not filled" });
     return;
   }
   try {
-    await dbo.collection("messages").insertOne({
+    await getDb("messages").insertOne({
       name: body.name,
       email: body.email,
       phone: body.phone,

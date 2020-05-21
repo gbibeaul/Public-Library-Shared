@@ -3,9 +3,8 @@ const router = express.Router();
 const getDb = require("../database/database.js").getDb;
 
 router.get("/", async (req, res) => {
-  let dbo = getDb();
   try {
-    const books = await dbo.collection("books").find({}).toArray();
+    const books = await getDb("books").find({}).toArray();
     const categories = Object.keys(
       books.reduce((acc, book) => {
         book.categories.forEach((category) => {

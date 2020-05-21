@@ -6,14 +6,13 @@ const sha1 = require("sha1");
 const getDb = require("../database/database.js").getDb;
 
 router.post("/", upload.none(), async (req, res) => {
-  let dbo = getDb();
   let body = JSON.parse(req.body.user);
   let email = body.email;
   let name = body.name;
   let password = body.password;
   let image = body.image;
   try {
-    let user = await dbo.collection("users").findOne({ email: email });
+    let user = await getDb("users").findOne({ email: email });
     if (user) {
       console.log("/SignUp Error - Username is already taken!");
       res.send(
@@ -22,8 +21,7 @@ router.post("/", upload.none(), async (req, res) => {
       return;
     }
     let sessionId;
-    await dbo
-      .collection("users")
+    await getDb("users")
       .insertOne({
         email: email,
         name: name,
@@ -35,9 +33,11 @@ router.post("/", upload.none(), async (req, res) => {
       })
       .then((result) => (sessionId = "" + result.insertedId));
 
-    await dbo
-      .collection("sessions")
-      .insertOne({ sid: sessionId, email: email, name: name });
+    await getDb("sessions").insertOne({
+      sid: sessionId,
+      email: email,
+      name: name,
+    });
 
     res.cookie("sid", sessionId);
     res.send(

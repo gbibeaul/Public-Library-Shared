@@ -1,33 +1,25 @@
 const ObjectId = require("mongodb").ObjectId;
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const upload = multer({ dest: __dirname + "/uploads/" });
 const getDb = require("../database/database.js").getDb;
 
 router.get("/", async (req, res) => {
-  const dbo = getDb();
   const sessionId = req.cookies.sid;
-  const activeUser = await dbo
-    .collection("sessions")
-    .findOne({ sid: sessionId });
+  const activeUser = await getDb("sessions").findOne({ sid: sessionId });
   if (!activeUser) {
     return res.send(
       JSON.stringify({ success: false, msg: "User is not active" })
     );
   }
   try {
-    const user = await dbo
-      .collection("users")
-      .findOne({ _id: ObjectId(sessionId) });
+    const user = await getDb("users").findOne({ _id: ObjectId(sessionId) });
     const historyIds = user.itemsHistory.map((record) => record.itemId);
     const toReturnIds = user.itemsToReturn.map((record) => record.itemId);
     const mergedData = historyIds
       .concat(toReturnIds)
       .concat(user.reservedItems);
     const reducedData = [...new Set(mergedData)];
-    const fullReducedData = await dbo
-      .collection("books")
+    const fullReducedData = await getDb("books")
       .find({ _id: { $in: reducedData.map((id) => ObjectId(id)) } })
       .toArray();
     user.itemsHistory = user.itemsHistory.map((item) => {

@@ -5,9 +5,8 @@ const upload = multer({ dest: __dirname + "/uploads/" });
 const getDb = require("../database/database.js").getDb;
 
 router.post("/", upload.none(), async (req, res) => {
-  const dbo = getDb();
   const sessionId = req.cookies.sid;
-  const user = await dbo.collection("sessions").findOne({ sid: sessionId });
+  const user = await getDb("sessions").findOne({ sid: sessionId });
   const itemId = req.body.id;
   const currentDate = Date.now();
   if (!user) {
@@ -17,7 +16,7 @@ router.post("/", upload.none(), async (req, res) => {
   }
   const email = user.email;
   try {
-    const book = await dbo.collection("books").findOneAndUpdate(
+    const book = await getDb("books").findOneAndUpdate(
       { _id: ObjectId(itemId) },
       {
         $set: {
@@ -33,7 +32,7 @@ router.post("/", upload.none(), async (req, res) => {
         JSON.stringify({ success: false, msg: "Item not found" })
       );
     }
-    await dbo.collection("users").updateOne(
+    await getDb("users").updateOne(
       { email: email },
       {
         $push: {
