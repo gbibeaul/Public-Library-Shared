@@ -3,10 +3,9 @@ const router = express.Router();
 const getDb = require("../database/database.js").getDb;
 
 router.get("/", async (req, res) => {
-  let dbo = getDb();
   let sessionId = req.cookies.sid;
   try {
-    const user = await dbo.collection("sessions").findOne({ sid: sessionId });
+    const user = await getDb("sessions").findOne({ sid: sessionId });
     user
       ? res.send(
           JSON.stringify({
