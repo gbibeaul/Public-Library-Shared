@@ -10,12 +10,12 @@ router.post("/", upload.none(), async (req, res) => {
   const user = await getDb("sessions").findOne({ sid: sessionId });
   const itemId = req.body.id;
   const currentDate = Date.now();
-
   if (!user) {
     return res.send(
       JSON.stringify({ success: false, msg: "User is not active" })
     );
   }
+
   const email = user.email;
   try {
     const book = await getDb("books").findOne({ _id: ObjectId(itemId) });
@@ -24,7 +24,11 @@ router.post("/", upload.none(), async (req, res) => {
         JSON.stringify({ success: false, msg: "Item not found" })
       );
     }
-    if (book.borrower === sessionId) {
+
+    if (
+      book.borrower.toString() === user._id.toString() &&
+      book.availability === false
+    ) {
       return res.send(
         JSON.stringify({
           success: false,
@@ -32,23 +36,25 @@ router.post("/", upload.none(), async (req, res) => {
         })
       );
     }
-    if (book.availability === false) {
+    if (
+      book.borrower.toString() !== user._id.toString() &&
+      book.availability === false
+    ) {
       return res.send(
         JSON.stringify({ success: false, msg: "Item is not available" })
       );
     }
-    book = await getDb("books").findOneAndUpdate(
+    const newBook = await getDb("books").findOneAndUpdate(
       { _id: ObjectId(itemId) },
       {
         $set: {
           availability: false,
-          borrower: sessionId,
+          borrower: user._id.toString(),
           borrowedDate: currentDate,
         },
       },
       { returnOriginal: false }
     );
-
     await getDb("users").updateOne(
       { email: email },
       {
@@ -60,11 +66,12 @@ router.post("/", upload.none(), async (req, res) => {
     res.send(
       JSON.stringify({
         success: true,
-        book: book.value,
+        book: newBook.value,
         msg: "borrowed successfully",
       })
     );
   } catch (err) {
+    console.log("err", err);
     res.send(JSON.stringify({ success: false, msg: err }));
   }
 });

@@ -6,6 +6,7 @@ router.get("/", async (req, res) => {
   let sessionId = req.cookies.sid;
   try {
     const user = await getDb("sessions").findOne({ sid: sessionId });
+
     user
       ? res.send(
           JSON.stringify({

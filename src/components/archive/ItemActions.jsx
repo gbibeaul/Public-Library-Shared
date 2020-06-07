@@ -41,7 +41,6 @@ export default function ItemActions() {
     let response = await fetch("/borrow", { method: "POST", body: data });
     let body = await response.text();
     body = JSON.parse(body);
-    console.log(body.success, body.msg);
     if (body.success) {
       setSnack({ isOpen: true, msg: body.msg, severity: "success" });
       await dispatch({
@@ -82,7 +81,6 @@ export default function ItemActions() {
     let response = await fetch("/return", { method: "POST", body: data });
     let body = await response.text();
     body = JSON.parse(body);
-    console.log(body.success, body.msg);
     if (body.success) {
       setSnack({ isOpen: true, msg: body.msg, severity: "success" });
       await dispatch({
@@ -94,7 +92,6 @@ export default function ItemActions() {
     setSnack({ isOpen: true, msg: body.msg, severity: "error" });
   };
   const handleReserve = async () => {
-    console.log(actionItem);
     if (!loggedIn)
       return setSnack({
         isOpen: true,
@@ -125,7 +122,6 @@ export default function ItemActions() {
     let response = await fetch("/reserve", { method: "POST", body: data });
     let body = await response.text();
     body = JSON.parse(body);
-    console.log(body.success, body.msg);
     if (body.success) {
       setSnack({ isOpen: true, msg: body.msg, severity: "success" });
       await dispatch({
@@ -137,7 +133,6 @@ export default function ItemActions() {
     setSnack({ isOpen: true, msg: body.msg, severity: "error" });
   };
   const handleCancelReserve = async () => {
-    console.log(actionItem);
     if (!loggedIn)
       return setSnack({
         isOpen: true,

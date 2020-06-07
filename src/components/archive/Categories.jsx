@@ -59,20 +59,16 @@ export default function Categories() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const getCategories = async () => {
-    console.log(1);
     let response = await fetch("/categories");
     let body = await response.text();
     body = JSON.parse(body);
     if (body.success) {
-      console.log(body);
       await dispatch({
         type: "GET_CATEGORIES",
         categories: body.categories,
       });
       return;
     }
-    console.log(body.success);
-    console.log(body.msg);
   };
   const handleCategory = async (evt, category) => {
     evt.preventDefault();

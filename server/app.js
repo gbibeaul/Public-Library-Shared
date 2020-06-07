@@ -67,17 +67,17 @@ app.use("/contact", contact);
 
 // Your endpoints go before this line
 
-let start = async () => {
-  console.log("url", url);
-  await initMongo(url).then((response) => {
+let listener;
+let start = async (database) => {
+  await initMongo(url, database).then((response) => {
     dbo = response;
-    app.listen(4000, "0.0.0.0", () => {
+    listener = app.listen(4000, "0.0.0.0", () => {
       console.log("Server running on port 4000");
     });
   });
 };
 let close = () => {
-  app.close();
+  listener.close();
 };
 
 module.exports = { app, start, close };
