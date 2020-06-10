@@ -5,7 +5,7 @@ const multer = require("multer");
 const upload = multer({ dest: __dirname + "/uploads/" });
 const getDb = require("../database/database.js").getDb;
 
-router.post("/return", upload.none(), async (req, res) => {
+router.post("/", upload.none(), async (req, res) => {
   const sessionId = req.cookies.sid;
   const user = await getDb("sessions").findOne({ sid: sessionId });
   const itemId = req.body.id;
@@ -20,7 +20,7 @@ router.post("/return", upload.none(), async (req, res) => {
   const email = user.email;
   const item = await getDb("books").findOne({
     _id: ObjectId(itemId),
-    borrower: sessionId,
+    borrower: user._id.toString(),
   });
   if (!item) {
     return res.send(JSON.stringify({ success: false, msg: "Item not found" }));

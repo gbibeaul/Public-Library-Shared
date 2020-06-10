@@ -6,7 +6,7 @@ const app = require("../server/app.js").app;
 const start = require("../server/app.js").start;
 const close = require("../server/app.js").close;
 
-// One Item
+// One Item ===================================================================
 
 describe("GET /item", function () {
   beforeEach(async () => await start("Lib-copy"));
@@ -51,7 +51,8 @@ describe("GET /item", function () {
   });
 });
 
-// All Items
+// All Items ===================================================================
+
 describe("GET /items", function () {
   beforeEach(async () => await start("Lib-copy"));
   afterEach(() => close());
@@ -67,7 +68,7 @@ describe("GET /items", function () {
 
     body = JSON.parse(body);
     expect(body).to.be.an("object").that.does.include({ success: true });
-    expect(body.items.length).to.equal(5);
+    expect(body.items.length).to.equal(6);
     expect(response.status).to.equal(200);
   });
 });

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import FacebookLogin from "react-facebook-login";
 import { GoogleLogin } from "react-google-login";
@@ -75,7 +74,10 @@ export default function Login() {
           <h3>{t("Login.box1-title")}</h3>
           <div className="Details1">
             <FacebookLogin
-              appId=""
+              appId={() => {
+                require("dotenv").config({ path: "..../.env" });
+                return process.env.FB_KEY;
+              }}
               autoLoad
               fields="name,email,picture"
               callback={responseFacebook}

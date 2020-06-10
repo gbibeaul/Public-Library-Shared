@@ -19,7 +19,7 @@ router.post("/", upload.none(), async (req, res) => {
     const item = await getDb("books").findOne({
       _id: ObjectId(itemId),
     });
-    if (item.reservations.includes(sessionId)) {
+    if (item.reservations.includes(user._id.toString())) {
       return res.send(
         JSON.stringify({
           success: false,
@@ -35,7 +35,7 @@ router.post("/", upload.none(), async (req, res) => {
         })
       );
     }
-    if (item.borrower === sessionId) {
+    if (item.borrower === user._id.toString()) {
       return res.send(
         JSON.stringify({
           success: false,
@@ -45,8 +45,8 @@ router.post("/", upload.none(), async (req, res) => {
     }
 
     const book = await getDb("books").findOneAndUpdate(
-      { _id: ObjectId(itemId), reservations: { $nin: [sessionId] } },
-      { $push: { reservations: sessionId } },
+      { _id: ObjectId(itemId), reservations: { $nin: [user._id.toString()] } },
+      { $push: { reservations: user._id.toString() } },
       { returnOriginal: false }
     );
     await getDb("users").updateOne(
