@@ -18,7 +18,7 @@ router.post("/", upload.none(), async (req, res) => {
   try {
     const alreadyReserved = await getDb("books").findOne({
       _id: ObjectId(itemId),
-      reservations: sessionId,
+      reservations: user._id.toString(),
     });
     console.log(alreadyReserved);
     if (!alreadyReserved) {
@@ -36,14 +36,14 @@ router.post("/", upload.none(), async (req, res) => {
     const book = await getDb("books").findOneAndUpdate(
       {
         _id: ObjectId(itemId),
-        reservations: sessionId,
+        reservations: user._id.toString(),
       },
-      { $pull: { reservations: sessionId } },
+      { $pull: { reservations: user._id.toString() } },
       { returnOriginal: false }
     );
     console.log("book", book.value);
     await getDb("users").updateOne(
-      { _id: ObjectId(sessionId), reservedItems: itemId },
+      { _id: user._id.toString(), reservedItems: itemId },
       { $pull: { reservedItems: itemId } }
     );
     res.send(

@@ -89,34 +89,6 @@ describe("LOGIN", function () {
   });
 });
 
-// // LOGOUT ===================================================================
-// NEEDS TO BE AT THE END OF THE TEST!! BUT ITS READY.
-
-// describe("LOGOUT", function () {
-//   beforeEach(async () => await start("Lib-copy"));
-//   afterEach(() => close());
-
-//   it("Logout - successfull", async () => {
-//     const response = await request(app)
-//       .get("/logout")
-//       .set({ cookie: "sid=5e7a938caa89e53cf60ee3bb" })
-//       .set("Accept", "application/json");
-//     expect(response.header).to.include({
-//       "content-type": "text/html; charset=utf-8",
-//     });
-//     expect(response.header).to.include({
-//       "content-type": "text/html; charset=utf-8",
-//     });
-//     let body = await response.text;
-//     body = JSON.parse(body);
-//     expect(body).to.deep.equal({
-//       msg: "You Have Logged Out Successfully",
-//       success: true,
-//     });
-//     expect(response.status).to.equal(200);
-//   });
-// });
-
 // SIGNUP ===================================================================
 describe("SUGNUP", function () {
   beforeEach(async () => await start("Lib-copy"));

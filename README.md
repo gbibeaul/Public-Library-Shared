@@ -24,6 +24,7 @@
    <li> Express </li>
    <li> Google login, Google maps and Facebook login</li> 
    <li> MongoDB</li>
+   <li> SuperTest, Mongo Seeding, Mocha, Chai </li>
    <li> I18n</li>
  </ul>
    
