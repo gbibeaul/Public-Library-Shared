@@ -5,6 +5,7 @@ const multer = require("multer");
 const upload = multer({ dest: __dirname + "/uploads/" });
 const getDb = require("../database/database.js").getDb;
 
+
 router.post("/", upload.none(), async (req, res) => {
   const sessionId = req.cookies.sid;
   const user = await getDb("sessions").findOne({ sid: sessionId });
@@ -93,6 +94,7 @@ router.post("/", upload.none(), async (req, res) => {
         $pull: { itemsToReturn: { itemId: itemId } },
       }
     );
+
     await getDb("users").updateOne(
       {
         _id: ObjectId(newBorrower),
