@@ -18,6 +18,7 @@ export default function Logout(props) {
   };
   useEffect(() => {
     deleteSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div></div>;

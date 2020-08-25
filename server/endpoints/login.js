@@ -8,35 +8,35 @@ const getDb = require("../database/database.js").getDb;
 router.post("/", upload.none(), async (req, res) => {
   let body = JSON.parse(req.body.user);
   let email = body.email;
-  let name = body.name;
   let password = body.password;
-  let image = body.image;
   try {
     let user = await getDb("users").findOne({ email: email });
-    if (user) {
-      console.log("/SignUp Error - Username is already taken!");
+    if (!user) {
+      console.log("/Login-Error, Username not found!");
       res.send(
-        JSON.stringify({ success: false, msg: "Username is already taken!" })
+        JSON.stringify({
+          success: false,
+          msg: "Login-Error, Username not found!",
+        })
       );
       return;
     }
-    let sessionId;
-    await getDb("users")
-      .insertOne({
-        email: email,
-        name: name,
-        password: sha1(password),
-        img: image,
-        itemsHistory: [],
-        itemsToReturn: [],
-        reservedItems: [],
-      })
-      .then((result) => (sessionId = "" + result.insertedId));
+    if (!(user.password === sha1(password))) {
+      res.send(
+        JSON.stringify({
+          success: false,
+          msg: "Login-Error, Incorrect Password!",
+        })
+      );
+      return;
+    }
+    console.log("/Login-Success, Login Successful!");
+    let sessionId = "" + user._id;
 
     await getDb("sessions").insertOne({
       sid: sessionId,
-      email: email,
-      name: name,
+      email: user.email,
+      name: user.name,
     });
 
     res.cookie("sid", sessionId);
@@ -44,13 +44,13 @@ router.post("/", upload.none(), async (req, res) => {
       JSON.stringify({
         success: true,
         msg: "Login Successful!",
-        name: name,
-        email: email,
-        id: sessionId,
+        name: user.name,
+        email: user.email,
+        id: user._id,
       })
     );
   } catch (err) {
-    console.log("/SignUp Error", err);
+    console.log("/Login Error", err);
     res.send(JSON.stringify({ success: false, msg: err }));
   }
 });

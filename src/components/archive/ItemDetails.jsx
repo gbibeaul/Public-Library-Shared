@@ -23,6 +23,7 @@ export default function ItemDetails() {
   };
   useEffect(() => {
     getItem();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return !actionItem ? (
@@ -32,7 +33,12 @@ export default function ItemDetails() {
       <div className="pageTitle">{t("ItemDetails.pageTitle")}</div>
       <div className="ItemDetails-contents">
         <div>
-          <img src={actionItem.thumbnailUrl} width="250px" height="300px" />
+          <img
+            src={actionItem.thumbnailUrl}
+            alt=""
+            width="250px"
+            height="300px"
+          />
         </div>
         <div className="ItemDetails-contents-2">
           <div>
