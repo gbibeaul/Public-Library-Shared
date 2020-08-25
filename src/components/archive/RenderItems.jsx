@@ -85,12 +85,14 @@ export default function RenderItems() {
       )}
 
       <div className="RenderItems">
-        {(selectedCategory || searchQ.input
-          ? filterByItems
-          : randomItems.current
-        ).map((item) => (
-          <FilteredItems item={item} key={item._id} />
-        ))}
+        {filterByItems.length < 1 ? (
+          <div> {t("RenderItems.no-match")}</div>
+        ) : (
+          (selectedCategory || searchQ.input
+            ? filterByItems
+            : randomItems.current
+          ).map((item) => <FilteredItems item={item} key={item._id} />)
+        )}
       </div>
     </div>
   );

@@ -6,16 +6,16 @@ const upload = multer({ dest: __dirname + "/uploads/" });
 const getDb = require("../database/database.js").getDb;
 
 router.post("/", upload.none(), async (req, res) => {
-  const sessionId = req.cookies.sid;
-  const user = await getDb("sessions").findOne({ sid: sessionId });
-  const itemId = req.body.id;
-  if (!user) {
-    return res.send(
-      JSON.stringify({ success: false, msg: "User is not active" })
-    );
-  }
-  const email = user.email;
   try {
+    const sessionId = req.cookies.sid;
+    const user = await getDb("sessions").findOne({ sid: sessionId });
+    const itemId = req.body.id;
+    if (!user) {
+      return res.send(
+        JSON.stringify({ success: false, msg: "User is not active" })
+      );
+    }
+    const email = user.email;
     const item = await getDb("books").findOne({
       _id: ObjectId(itemId),
     });

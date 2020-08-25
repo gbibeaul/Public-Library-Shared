@@ -14,13 +14,11 @@ router.post("/", upload.none(), async (req, res) => {
       JSON.stringify({ success: false, msg: "User is not active" })
     );
   }
-  const email = user.email;
   try {
     const alreadyReserved = await getDb("books").findOne({
       _id: ObjectId(itemId),
       reservations: user._id.toString(),
     });
-    console.log(alreadyReserved);
     if (!alreadyReserved) {
       return res.send(
         JSON.stringify({
@@ -41,7 +39,6 @@ router.post("/", upload.none(), async (req, res) => {
       { $pull: { reservations: user._id.toString() } },
       { returnOriginal: false }
     );
-    console.log("book", book.value);
     await getDb("users").updateOne(
       { _id: user._id.toString(), reservedItems: itemId },
       { $pull: { reservedItems: itemId } }

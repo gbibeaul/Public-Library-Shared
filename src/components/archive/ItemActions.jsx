@@ -52,7 +52,6 @@ export default function ItemActions() {
     setSnack({ isOpen: true, msg: body.msg, severity: "error" });
   };
   const handleReturn = async () => {
-    console.log(actionItem);
     if (!loggedIn)
       return setSnack({
         isOpen: true,
@@ -163,7 +162,6 @@ export default function ItemActions() {
     });
     let body = await response.text();
     body = JSON.parse(body);
-    console.log(body.success, body.msg, body.book);
     if (body.success) {
       setSnack({ isOpen: true, msg: body.msg, severity: "success" });
       await dispatch({
@@ -199,17 +197,17 @@ export default function ItemActions() {
               {actionItem.reservations.length})
             </span>{" "}
           </div>
+          {actionItem.borrower === userId && (
+            <button onClick={() => handleReturn()} className="r-btn">
+              {t("ItemActions.return")}
+            </button>
+          )}
           {!actionItem.reservations.includes(userId) &&
             !(actionItem.borrower === userId) && (
               <button onClick={() => handleReserve()} className="r-btn">
                 {t("ItemActions.reserve")}
               </button>
             )}
-          {actionItem.borrower === userId && (
-            <button onClick={() => handleReturn()} className="r-btn">
-              {t("ItemActions.return")}
-            </button>
-          )}
           {actionItem.reservations.includes(userId) && (
             <button onClick={() => handleCancelReserve()} className="r-btn">
               {t("ItemActions.cancel-reserve")}

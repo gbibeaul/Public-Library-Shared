@@ -4,9 +4,7 @@ const getDb = require("../database/database.js").getDb;
 
 router.get("/", async (req, res) => {
   const sessionId = req.cookies.sid;
-  console.log("sessionId", sessionId);
   const user = await getDb("sessions").findOne({ sid: sessionId });
-  console.log("user", user);
   const email = user.email;
   if (!email)
     return res.send(

@@ -120,7 +120,8 @@
     "recenlty-added": "RÉCEMMENT AJOUTÉ",
     "reset-search": "Réinitialiser la recherche",
     "hide-categories": "Masquer les catégories",
-    "show-categories": "Afficher les catégories"
+    "show-categories": "Afficher les catégories",
+    "no-match": "Pas de résultat trouvé!"
   },
   "ContactUs": {
     "pageTitle": "NOUS JOINSRE",

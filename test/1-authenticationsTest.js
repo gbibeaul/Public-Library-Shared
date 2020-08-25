@@ -77,7 +77,6 @@ describe("LOGIN", function () {
     });
     let body = await response.text;
     body = JSON.parse(body);
-    console.log("body", body);
     expect(body).to.include({
       success: true,
       msg: "Login Successful!",
@@ -188,7 +187,6 @@ describe("SESSIONS", function () {
     });
     let body = await response.text;
     body = JSON.parse(body);
-    console.log("body", body);
     expect(body).to.deep.equal({
       success: false,
       msg: "User is not active",

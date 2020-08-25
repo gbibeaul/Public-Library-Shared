@@ -93,7 +93,6 @@ router.post("/", upload.none(), async (req, res) => {
         $pull: { itemsToReturn: { itemId: itemId } },
       }
     );
-    console.log(newBorrower);
     await getDb("users").updateOne(
       {
         _id: ObjectId(newBorrower),

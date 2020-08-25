@@ -4,14 +4,14 @@ const router = express.Router();
 const getDb = require("../database/database.js").getDb;
 
 router.get("/", async (req, res) => {
-  const sessionId = req.cookies.sid;
-  const activeUser = await getDb("sessions").findOne({ sid: sessionId });
-  if (!activeUser) {
-    return res.send(
-      JSON.stringify({ success: false, msg: "User is not active" })
-    );
-  }
   try {
+    const sessionId = req.cookies.sid;
+    const activeUser = await getDb("sessions").findOne({ sid: sessionId });
+    if (!activeUser) {
+      return res.send(
+        JSON.stringify({ success: false, msg: "User is not active" })
+      );
+    }
     const user = await getDb("users").findOne({ _id: ObjectId(sessionId) });
     const historyIds = user.itemsHistory.map((record) => record.itemId);
     const toReturnIds = user.itemsToReturn.map((record) => record.itemId);
@@ -48,11 +48,9 @@ router.get("/", async (req, res) => {
       );
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       const avgDaysToReturn = matchItem.borrowedDays.reduce(reducer);
-      console.log(avgDaysToReturn);
       const userReservationIndex = matchItem.reservations.findIndex(
         (id) => id.toString() === sessionId.toString()
       );
-      console.log(userReservationIndex);
       const item = {};
       item.itemId = matchItem._id.toString();
       item.title = matchItem.title;
