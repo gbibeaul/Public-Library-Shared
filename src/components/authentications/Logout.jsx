@@ -9,7 +9,6 @@ export default function Logout(props) {
     const response = await fetch("/logout");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    console.log(parsed);
     if (parsed.success) {
       dispatch({ type: "LOGOUT" });
       props.onLogout();

@@ -23,7 +23,6 @@ function App() {
     const response = await fetch("/sessions");
     const body = await response.text();
     const parsed = JSON.parse(body);
-    console.log(parsed);
     if (parsed.success) {
       dispatch({
         type: "LOGIN",
@@ -44,7 +43,6 @@ function App() {
       });
       return;
     }
-    console.log(body.success, body.msg);
   };
 
   useEffect(() => {

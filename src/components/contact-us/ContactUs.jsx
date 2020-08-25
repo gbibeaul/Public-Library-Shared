@@ -17,17 +17,12 @@ export default function ContactUs() {
   const { t } = useTranslation();
 
   const handleContact = async (evt) => {
-    console.log(1);
     evt.preventDefault();
-    console.log(2);
     let data = new FormData();
     data.append("contact", JSON.stringify(contact));
-    console.log(3);
     let response = await fetch("/contact", { method: "POST", body: data });
     let body = await response.text();
-    console.log(4);
     body = JSON.parse(body);
-    console.log(body);
     if (body.success) {
       setContact(initialState);
       setSnack({ isOpen: true, msg: body.msg, severity: "success" });

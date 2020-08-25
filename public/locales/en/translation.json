@@ -120,7 +120,8 @@
     "recenlty-added": "RECENTLY ADDED",
     "reset-search": "Reset Search",
     "hide-categories": "Hide Categories",
-    "show-categories": "Show Categories"
+    "show-categories": "Show Categories",
+    "no-match": "No Match Found!"
   },
   "ContactUs": {
     "pageTitle": "CONTACT US",

@@ -28,8 +28,6 @@ export default function SignUp() {
   };
 
   const handleSignup = async (user) => {
-    // the next line is for check if signup form is empty and component did mount
-    console.log(user);
     if (!user.email) {
       return;
     }
@@ -42,12 +40,10 @@ export default function SignUp() {
       return;
     }
     const data = new FormData();
-    console.log(user);
     data.append("user", JSON.stringify(user));
     let response = await fetch("/signup", { method: "POST", body: data });
     let body = await response.text();
     body = JSON.parse(body);
-    console.log(body);
     if (body.success) {
       await dispatch({
         type: "LOGIN",
@@ -69,7 +65,6 @@ export default function SignUp() {
     return;
   };
   const responseFacebook = async (response) => {
-    console.log(response);
     if (!response.email) {
       return;
     }
@@ -84,7 +79,6 @@ export default function SignUp() {
     handleSignup(newUser);
   };
   const responseGoogle = async (response) => {
-    console.log(response);
     const newUser = {
       name: response.profileObj.name,
       email: response.profileObj.email,
@@ -104,7 +98,7 @@ export default function SignUp() {
           <h3>{t("Signup.box1-title")}</h3>
           <div className="Details1">
             <FacebookLogin
-              appId="2746486032249962"
+              appId={process.env.REACT_APP_FB_KEY}
               autoLoad
               fields="name,email,picture"
               callback={responseFacebook}
@@ -113,7 +107,7 @@ export default function SignUp() {
             />
             <div>or</div>
             <GoogleLogin
-              clientId=""
+              clientId={process.env.REACT_APP_GOOGLE_KEY}
               buttonText={t("Signup.g-text")}
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
@@ -124,33 +118,28 @@ export default function SignUp() {
 
         <div className="emailSection">
           <h3> {t("Signup.box2-title")}</h3>
-
           <form onSubmit={handleForm}>
             <div>{t("Signup.full-name")}:</div>
             <input
               type="text"
-              // value={user.name}
               onChange={(e) => setUser({ ...user, name: e.target.value })}
               required
             />
             <div>Email:</div>
             <input
               type="email"
-              // value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               required
             />
             <div>{t("Signup.pass")}:</div>
             <input
               type="password"
-              // value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
               required
             />
             <div>{t("Signup.confirm-pass")}:</div>
             <input
               type="password"
-              // value={user.confirmPassword}
               onChange={(e) =>
                 setUser({ ...user, confirmPassword: e.target.value })
               }

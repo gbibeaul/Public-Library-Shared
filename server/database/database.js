@@ -4,13 +4,13 @@ let booksDb = null;
 let userDb = null;
 let sessionsDb = null;
 
-const initMongo = async (url) => {
+const initMongo = async (url, database) => {
   if (!dbo) {
     const mongo = await MongoClient.connect(url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    dbo = mongo.db("Library");
+    dbo = mongo.db(database);
     console.log("Connection to Mongo established!");
     console.log("dbo", dbo);
   }

@@ -16,10 +16,8 @@ export default function ItemDetails() {
     body = JSON.parse(body);
     if (body.success) {
       dispatch({ type: "ACTION_ITEM", item: body.item });
-      console.log(body.item);
       return;
     }
-    console.log(body.success, body.msg);
   };
   useEffect(() => {
     getItem();
@@ -27,7 +25,7 @@ export default function ItemDetails() {
   }, []);
 
   return !actionItem ? (
-    <div className="ItemDetails"></div>
+    <div className="ItemDetails">Item Not Found!</div>
   ) : (
     <div className="ItemDetails" key={actionItem._id}>
       <div className="pageTitle">{t("ItemDetails.pageTitle")}</div>
@@ -52,7 +50,7 @@ export default function ItemDetails() {
           <div>
             <span className="field">{t("ItemDetails.author")}(s): </span>
             {actionItem.authors.map((author, index) => (
-              <span>
+              <span key={index}>
                 {author}
                 {actionItem.authors.length > 0 &&
                   index + 1 !== actionItem.authors.length &&

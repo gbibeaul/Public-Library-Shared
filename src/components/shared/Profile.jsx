@@ -19,15 +19,12 @@ export default function Profile() {
     let body = await response.text();
     body = JSON.parse(body);
     if (body.success) {
-      console.log(body.user);
-      console.log(body.itemsHistory);
       setUser(body.user);
       setHistory(body.itemsHistory);
       setToReturn(body.itemsToReturn);
       setReserved(body.reservedItems);
       return;
     }
-    console.log(body.success, body.msg);
   };
   const convertDate = (epochDate) => {
     const dateObj = new Date(epochDate);
@@ -207,28 +204,3 @@ export default function Profile() {
     </div>
   );
 }
-
-// const handleReturnItem = async id => {
-//   if (!loggedIn) return alert("You should login first!");
-//   console.log(id);
-//   let response = await fetch("/borrow?id=" + id);
-//   let body = await response.text();
-//   body = JSON.parse(body);
-//   if (body.success) {
-//     setItem(body.item);
-//     return;
-//   }
-//   console.log(body.success, body.msg);
-// };
-
-//{
-/* <div>
-          {user.itemsHistory.map(historyItem => {
-            const item = fullReducedData.find(
-              book => book._id === historyItem.itemId
-            );
-            console.log(item);
-            return <div> {item && item.title}</div>;
-          })}
-        </div> */
-//}

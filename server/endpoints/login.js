@@ -6,13 +6,12 @@ const sha1 = require("sha1");
 const getDb = require("../database/database.js").getDb;
 
 router.post("/", upload.none(), async (req, res) => {
-  let body = JSON.parse(req.body.user);
-  let email = body.email;
-  let password = body.password;
   try {
+    let body = JSON.parse(req.body.user);
+    let email = body.email;
+    let password = body.password;
     let user = await getDb("users").findOne({ email: email });
     if (!user) {
-      console.log("/Login-Error, Username not found!");
       res.send(
         JSON.stringify({
           success: false,
@@ -30,7 +29,6 @@ router.post("/", upload.none(), async (req, res) => {
       );
       return;
     }
-    console.log("/Login-Success, Login Successful!");
     let sessionId = "" + user._id;
 
     await getDb("sessions").insertOne({
@@ -50,7 +48,6 @@ router.post("/", upload.none(), async (req, res) => {
       })
     );
   } catch (err) {
-    console.log("/Login Error", err);
     res.send(JSON.stringify({ success: false, msg: err }));
   }
 });

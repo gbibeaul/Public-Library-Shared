@@ -48,7 +48,6 @@ export default function Login() {
     setSnack({ isOpen: true, msg: body.msg, severity: "error" });
   };
   const responseFacebook = async (response) => {
-    console.log(response);
     if (!response.email) {
       return;
     }
@@ -57,7 +56,6 @@ export default function Login() {
     handleLogin(newUser);
   };
   const responseGoogle = async (response) => {
-    console.log(response);
     const newUser = {
       email: response.profileObj.email,
       password: response.googleId,
@@ -74,7 +72,7 @@ export default function Login() {
           <h3>{t("Login.box1-title")}</h3>
           <div className="Details1">
             <FacebookLogin
-              appId=""
+              appId={process.env.REACT_APP_FB_KEY}
               autoLoad
               fields="name,email,picture"
               callback={responseFacebook}
@@ -83,7 +81,7 @@ export default function Login() {
             />
             <div>or</div>
             <GoogleLogin
-              clientId=""
+              clientId={process.env.REACT_APP_GOOGLE_KEY}
               buttonText={t("Login.g-text")}
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
@@ -97,13 +95,11 @@ export default function Login() {
             <div>Email:</div>
             <input
               type="email"
-              // value={user.email}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
             ></input>
             <div>{t("Login.pass")}:</div>
             <input
               type="password"
-              // value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
             ></input>
             <div>
