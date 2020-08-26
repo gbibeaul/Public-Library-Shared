@@ -2,16 +2,14 @@ require("dotenv").config();
 let express = require("express");
 let app = express();
 let cookieParser = require("cookie-parser");
-let dbo = undefined;
+
 let initMongo = require("./database/database.js").initMongo;
+
+let dbo = undefined;
+
 let url = process.env.SERVER_PATH;
 
 app.use(cookieParser());
-app.use("/", express.static("build")); // Needed for the HTML and JS files
-app.use("/", express.static("./public")); // Needed for local assets
-app.use("/uploads", express.static("uploads"));
-
-// Your endpoints go after this line
 
 // Signup
 const signup = require("./endpoints/signup.js");
@@ -79,5 +77,7 @@ let start = async (database) => {
 let close = () => {
   listener.close();
 };
+
+start()
 
 module.exports = { app, start, close };
