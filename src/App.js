@@ -74,7 +74,7 @@ function App() {
         <Route exact path="/Contact-Us" component={ContactUs}></Route>
         <Route exact path="/Events" component={Events}></Route>
         <Route exact path="/Services" component={Services}></Route>
-        <Footer />
+        {/* <Footer /> */}
         <PoweredBy />
       </div>
     </BrowserRouter>

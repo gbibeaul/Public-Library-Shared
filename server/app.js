@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config();
 let express = require("express");
 let app = express();
 let cookieParser = require("cookie-parser");
@@ -72,7 +72,7 @@ let start = async (database) => {
   await initMongo(url, database).then((response) => {
     dbo = response;
     listener = app.listen(4000, "0.0.0.0", () => {
-      console.log("Server running on port 4000");
+      console.log("Server running");
     });
   });
 };
